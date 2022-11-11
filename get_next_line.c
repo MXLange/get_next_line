@@ -6,7 +6,7 @@
 /*   By: msprenge <msprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 11:38:39 by msprenge          #+#    #+#             */
-/*   Updated: 2022/11/10 15:30:27 by msprenge         ###   ########.fr       */
+/*   Updated: 2022/11/11 18:26:17 by msprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,9 @@ char	*read_file(int fd, char *res)
 
 	if (!res)
 		res = ft_calloc(1, 1);
-	//buffer = ft_calloc(sizeof(char), (BUFFER_SIZE + 1));
-	buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
-	if (!buffer)
-		return (NULL);
+	buffer = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
 	byte_read = 1;
-	while (byte_read > 0 && !ft_strchr(buffer, '\n'))
+	while (byte_read > 0)
 	{
 		byte_read = read(fd, buffer, BUFFER_SIZE);
 		if (byte_read == -1)
@@ -45,8 +42,8 @@ char	*read_file(int fd, char *res)
 		}
 		buffer[byte_read] = 0;
 		res = ft_free(res, buffer);
-		//if (ft_strchr(buffer, '\n')) //colocar no while para testar;
-		//	break;
+		if (ft_strchr(buffer, '\n'))
+			break ;
 	}
 	free(buffer);
 	return (res);
@@ -60,24 +57,17 @@ char	*ft_get_line(char *buffer)
 	i = 0;
 	if (!buffer[i])
 		return (NULL);
-	while (buffer && buffer[i] != '\n')
+	while (buffer[i] && buffer[i] != '\n')
 		i++;
-	//line = ft_calloc((i + 2), sizeof(char));
-	line = malloc(sizeof(char) * (i + 2));
-	if (!line)
-		return (NULL);
+	line = ft_calloc(i + 2, sizeof(char));
 	i = 0;
-	while (buffer && buffer[i] != '\n')
+	while (buffer[i] && buffer[i] != '\n')
 	{
 		line[i] = buffer[i];
 		i++;
 	}
-	if (buffer[i] == '\n')
-	{
-		line[i] = '\n';
-		i++;
-	}
-	line[i] = '\0';
+	if (buffer[i] && buffer[i] == '\n')
+		line[i++] = '\n';
 	return (line);
 }
 
@@ -88,17 +78,14 @@ char	*ft_remain_of_file(char *buffer)
 	int		j;
 
 	i = 0;
-	while (buffer && buffer[i] != '\n')
+	while (buffer[i] && buffer[i] != '\n')
 		i++;
 	if (!buffer[i])
 	{
 		free(buffer);
 		return (NULL);
 	}
-	//rest = ft_calloc((ft_strlen(buffer) - i + 1), sizeof(char));
-	rest = malloc(sizeof(char) * (ft_strlen(buffer) - i + 1));
-	if (!rest)
-		return (NULL);
+	rest = ft_calloc((ft_strlen(buffer) - i + 1), sizeof(char));
 	i++;
 	j = 0;
 	while (buffer[i])
@@ -109,10 +96,10 @@ char	*ft_remain_of_file(char *buffer)
 
 char	*get_next_line(int fd)
 {
+	static char	*buffer;
 	char		*curr_line;
-	static char	*buffer; //[OPEN_MAX] for bonnus
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
+	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
 		return (NULL);
 	buffer = read_file(fd, buffer);
 	if (!buffer)
@@ -125,23 +112,24 @@ char	*get_next_line(int fd)
 int	main(void)
 {
 	char	*line;
+	char	*line2;
 	int		i;
 	int		fd1;
-	//int		fd2;
+	int		fd2;
 	fd1 = open("tests/test.txt", O_RDONLY);
-	//fd2 = open("tests/test2.txt", O_RDONLY);
+	fd2 = open("tests/test2.txt", O_RDONLY);
 	i = 0;
-	while (i < 5)
+	while (i < 6)
 	{
 		line = get_next_line(fd1);
 		printf("line [%02d]: %s", i, line);
 		free(line);
-		//line = get_next_line(fd2);
-		//printf("line [%02d]: %s", i, line);
-		//free(line);
+		line2 = get_next_line(fd2);
+		printf("line [%02d]: %s", i, line2);
+		free(line2);
 		i++;
 	}
 	close(fd1);
-	//close(fd2);
+	close(fd2);
 	return (0);
 }*/

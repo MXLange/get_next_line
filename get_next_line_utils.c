@@ -6,7 +6,7 @@
 /*   By: msprenge <msprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 11:38:42 by msprenge          #+#    #+#             */
-/*   Updated: 2022/11/10 12:40:44 by msprenge         ###   ########.fr       */
+/*   Updated: 2022/11/11 17:48:31 by msprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,20 +58,6 @@ size_t	ft_strlen(const char *s)
 	while (s[len] != '\0')
 		len++;
 	return (len);
-}
-
-void	ft_bzero(void *s, size_t n)
-{
-	unsigned char	*p;
-	size_t			i;
-
-	i = 0;
-	p = (unsigned char *)s;
-	while (i < n)
-	{
-		p[i] = 0;
-		i++;
-	}
 }
 
 void	*ft_calloc(size_t nmemb, size_t size)
