@@ -3,111 +3,110 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: msprenge <msprenge@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mu <mu@student.42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 15:24:17 by msprenge          #+#    #+#             */
-/*   Updated: 2022/11/11 18:57:15 by msprenge         ###   ########.fr       */
+/*   Updated: 2022/11/12 17:53:49 by mu               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
-#include <stdio.h>
-#include <fcntl.h>
 
-char	*ft_free(char *buffer, char *buf)
+static char	*erase_first_line(char *file)
 {
-	char	*final;
-
-	final = ft_strjoin(buffer, buf);
-	free(buffer);
-	return (final);
-}
-
-char	*read_file(int fd, char *res)
-{
-	char	*buffer;
-	int		byte_read;
-
-	if (!res)
-		res = ft_calloc(1, 1);
-	buffer = ft_calloc((BUFFER_SIZE + 1), sizeof(char));
-	byte_read = 1;
-	while (byte_read > 0)
-	{
-		byte_read = read(fd, buffer, BUFFER_SIZE);
-		if (byte_read == -1)
-		{
-			free(buffer);
-			return (NULL);
-		}
-		buffer[byte_read] = 0;
-		res = ft_free(res, buffer);
-		if (ft_strchr(buffer, '\n'))
-			break;
-	}
-	free(buffer);
-	return (res);
-}
-
-char	*ft_get_line(char *buffer)
-{
-	char	*line;
-	long		i;
-
-	i = 0;
-	if (!buffer[i])
-		return (NULL);
-	while (buffer[i] && buffer[i] != '\n')
-		i++;
-	line = ft_calloc((i + 2), sizeof(char));
-	i = 0;
-	while (buffer[i] && buffer[i] != '\n')
-	{
-		line[i] = buffer[i];
-		i++;
-	}
-	if (buffer[i] && buffer[i] == '\n')
-		line[i++] = '\n';
-	return (line);
-}
-
-char	*ft_remain_of_file(char *buffer)
-{
-	char	*rest;
+	char	*temp;
 	int		i;
 	int		j;
 
 	i = 0;
-	while (buffer[i] && buffer[i] != '\n')
+	while (file[i] && file[i] != '\n')
 		i++;
-	if (!buffer[i])
+	if (!file[i])
 	{
-		free(buffer);
+		free(file);
 		return (NULL);
 	}
-	rest = ft_calloc((ft_strlen(buffer) - i + 1), sizeof(char));
+	temp = ft_calloc((ft_strlen(file) - i + 1), sizeof(char));
 	i++;
 	j = 0;
-	while (buffer[i])
-		rest[j++] = buffer[i++];
-	free(buffer);
-	return (rest);
+	while (file[i])
+		temp[j++] = file[i++];
+	free(file);
+	return (temp);
+}
+
+static char	*get_first_line(char *file)
+{
+	char	*first_line;
+	int		i;
+
+	i = 0;
+	if (!file[i])
+		return (NULL);
+	while (file[i] && file[i] != '\n')
+		i++;
+	first_line = ft_calloc(i + 2, sizeof(char));
+	i = 0;
+	while (file[i] && file[i] != '\n')
+	{
+		first_line[i] = file[i];
+		i++;
+	}
+	if (file[i] && file[i] == '\n')
+		first_line[i++] = '\n';
+	return (first_line);
+}
+
+static char	*ft_free(char *file, char *temp)
+{
+	char	*final;
+
+	final = ft_strjoin(file, temp);
+	free(file);
+	return (final);
+}
+
+static char	*make_file(int fd, char *file)
+{
+	char	*temp;
+	int		read_bytes;
+
+	if (!file)
+		file = ft_calloc(1, 1);
+	temp = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
+	read_bytes = 1;
+	while (read_bytes > 0)
+	{
+		read_bytes = read(fd, temp, BUFFER_SIZE);
+		if (read_bytes == -1)
+		{
+			free(temp);
+			return (NULL);
+		}
+		temp[read_bytes] = 0;
+		file = ft_free(file, temp);
+		if (ft_strchr(temp, '\n'))
+			break ;
+	}
+	free(temp);
+	return (file);
 }
 
 char	*get_next_line(int fd)
 {
-	char		*curr_line;
-	static char	*buffer[256];
+	static char	*file[256];
+	char		*line;
 
 	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
 		return (NULL);
-	buffer[fd] = read_file(fd, buffer[fd]);
-	if (!buffer[fd])
+	file[fd] = make_file(fd, file[fd]);
+	if (!file[fd])
 		return (NULL);
-	curr_line = ft_get_line(buffer[fd]);
-	buffer[fd] = ft_remain_of_file(buffer[fd]);
-	return (curr_line);
+	line = get_first_line(file[fd]);
+	file[fd] = erase_first_line(file[fd]);
+	return (line);
 }
+
 /*
 int	main(void)
 {

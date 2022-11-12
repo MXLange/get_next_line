@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_bonus.h                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: msprenge <msprenge@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mu <mu@student.42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 15:24:31 by msprenge          #+#    #+#             */
-/*   Updated: 2022/11/11 17:07:51 by msprenge         ###   ########.fr       */
+/*   Updated: 2022/11/12 14:50:19 by mu               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,6 @@ char	*ft_strchr(const char *s, int c);
 char	*ft_strjoin(char const *s1, char const *s2);
 size_t	ft_strlen(const char *s);
 void	*ft_calloc(size_t nmemb, size_t size);
-char	*get_next_line(int fd);
+char	*get_next_line_bonus(int fd);
 
 #endif
