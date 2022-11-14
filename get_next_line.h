@@ -3,12 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mu <mu@student.42.fr>                      +#+  +:+       +#+        */
+/*   By: msprenge <msprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 11:38:33 by msprenge          #+#    #+#             */
-/*   Updated: 2022/11/12 14:50:21 by mu               ###   ########.fr       */
+/*   Updated: 2022/11/14 15:19:16 by msprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#ifndef BUFFER_SIZE
+# define BUFFER_SIZE 1000
+#endif
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H

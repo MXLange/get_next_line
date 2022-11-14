@@ -3,22 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mu <mu@student.42.fr>                      +#+  +:+       +#+        */
+/*   By: msprenge <msprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 11:38:39 by msprenge          #+#    #+#             */
-/*   Updated: 2022/11/12 14:49:37 by mu               ###   ########.fr       */
+/*   Updated: 2022/11/14 15:25:28 by msprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <stdio.h>
-#include <fcntl.h>
+//#include <stdio.h>
+//#include <fcntl.h>
 
 static char	*erase_first_line(char *file)
 {
 	char	*temp;
-	int		i;
-	int		j;
+	size_t	i;
+	size_t	j;
 
 	i = 0;
 	while (file[i] && file[i] != '\n')
@@ -40,7 +40,7 @@ static char	*erase_first_line(char *file)
 static char	*get_first_line(char *file)
 {
 	char	*first_line;
-	int		i;
+	size_t	i;
 
 	i = 0;
 	if (!file[i])
@@ -54,8 +54,8 @@ static char	*get_first_line(char *file)
 		first_line[i] = file[i];
 		i++;
 	}
-	if (file[i] && file[i] == '\n')
-		first_line[i++] = '\n';
+	if (file[i] == '\n')
+		first_line[i] = '\n';
 	return (first_line);
 }
 
@@ -71,10 +71,12 @@ static char	*ft_free(char *file, char *temp)
 static char	*make_file(int fd, char *file)
 {
 	char	*temp;
-	int		read_bytes;
+	ssize_t	read_bytes;
 
 	if (!file)
 		file = ft_calloc(1, 1);
+	if (ft_strchr(file, '\n'))
+			return (file);
 	temp = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
 	read_bytes = 1;
 	while (read_bytes > 0)
@@ -105,14 +107,14 @@ char	*get_next_line(int fd)
 	if (!file)
 		return (NULL);
 	line = get_first_line(file);
-	erase_first_line(file);
+	file = erase_first_line(file);
 	return (line);
 }
 /*
 int	main(void)
 {
 	char	*line;
-	char	*line2;
+	//char	*line2;
 	int		i;
 	int		fd1;
 	int		fd2;
