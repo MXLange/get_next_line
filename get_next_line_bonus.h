@@ -6,13 +6,9 @@
 /*   By: msprenge <msprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 15:24:31 by msprenge          #+#    #+#             */
-/*   Updated: 2022/11/14 15:19:38 by msprenge         ###   ########.fr       */
+/*   Updated: 2022/11/14 16:57:15 by msprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#ifndef BUFFER_SIZE
-# define BUFFER_SIZE 1000
-#endif
 
 #ifndef GET_NEXT_LINE_BONUS_H
 # define GET_NEXT_LINE_BONUS_H
@@ -23,6 +19,10 @@
 # include <sys/uio.h>
 # include <unistd.h>
 # include <limits.h>
+
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 1000
+# endif
 
 char	*ft_strchr(const char *s, int c);
 char	*ft_strjoin(char const *s1, char const *s2);

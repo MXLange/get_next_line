@@ -6,7 +6,7 @@
 /*   By: msprenge <msprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 11:38:39 by msprenge          #+#    #+#             */
-/*   Updated: 2022/11/14 15:25:28 by msprenge         ###   ########.fr       */
+/*   Updated: 2022/11/14 17:57:04 by msprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static char	*erase_first_line(char *file)
 		free(file);
 		return (NULL);
 	}
-	temp = ft_calloc((ft_strlen(file) - i + 1), sizeof(char));
+	temp = ft_calloc((ft_strlen(file) - i), sizeof(char));
 	i++;
 	j = 0;
 	while (file[i])
@@ -76,7 +76,7 @@ static char	*make_file(int fd, char *file)
 	if (!file)
 		file = ft_calloc(1, 1);
 	if (ft_strchr(file, '\n'))
-			return (file);
+		return (file);
 	temp = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
 	read_bytes = 1;
 	while (read_bytes > 0)

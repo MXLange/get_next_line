@@ -6,13 +6,13 @@
 /*   By: msprenge <msprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 15:24:17 by msprenge          #+#    #+#             */
-/*   Updated: 2022/11/14 15:26:30 by msprenge         ###   ########.fr       */
+/*   Updated: 2022/11/14 18:01:25 by msprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
-//#include <stdio.h>
-//#include <fcntl.h>
+#include <stdio.h>
+#include <fcntl.h>
 
 static char	*erase_first_line(char *file)
 {
@@ -28,7 +28,7 @@ static char	*erase_first_line(char *file)
 		free(file);
 		return (NULL);
 	}
-	temp = ft_calloc((ft_strlen(file) - i + 1), sizeof(char));
+	temp = ft_calloc((ft_strlen(file) - i), sizeof(char));
 	i++;
 	j = 0;
 	while (file[i])
@@ -98,10 +98,10 @@ static char	*make_file(int fd, char *file)
 
 char	*get_next_line(int fd)
 {
-	static char	*file[1048576];
+	static char	*file[FOPEN_MAX];
 	char		*line;
 
-	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
+	if (fd < 0 || BUFFER_SIZE <= 0 || fd > FOPEN_MAX || read(fd, 0, 0) < 0)
 		return (NULL);
 	file[fd] = make_file(fd, file[fd]);
 	if (!file[fd])
