@@ -6,15 +6,13 @@
 /*   By: msprenge <msprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 15:24:17 by msprenge          #+#    #+#             */
-/*   Updated: 2022/11/14 18:01:25 by msprenge         ###   ########.fr       */
+/*   Updated: 2022/11/22 14:15:17 by msprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
-#include <stdio.h>
-#include <fcntl.h>
 
-static char	*erase_first_line(char *file)
+char	*erase_first_line(char *file)
 {
 	char	*temp;
 	size_t	i;
@@ -37,7 +35,7 @@ static char	*erase_first_line(char *file)
 	return (temp);
 }
 
-static char	*get_first_line(char *file)
+char	*get_first_line(char *file)
 {
 	char	*first_line;
 	size_t	i;
@@ -59,7 +57,7 @@ static char	*get_first_line(char *file)
 	return (first_line);
 }
 
-static char	*ft_free(char *file, char *temp)
+char	*ft_free(char *file, char *temp)
 {
 	char	*final;
 
@@ -68,7 +66,7 @@ static char	*ft_free(char *file, char *temp)
 	return (final);
 }
 
-static char	*make_file(int fd, char *file)
+char	*make_file(int fd, char *file)
 {
 	char	*temp;
 	ssize_t	read_bytes;
@@ -85,6 +83,7 @@ static char	*make_file(int fd, char *file)
 		if (read_bytes == -1)
 		{
 			free(temp);
+			free(file);
 			return (NULL);
 		}
 		temp[read_bytes] = 0;
@@ -101,7 +100,7 @@ char	*get_next_line(int fd)
 	static char	*file[FOPEN_MAX];
 	char		*line;
 
-	if (fd < 0 || BUFFER_SIZE <= 0 || fd > FOPEN_MAX || read(fd, 0, 0) < 0)
+	if (fd < 0 || BUFFER_SIZE <= 0 || fd > FOPEN_MAX)
 		return (NULL);
 	file[fd] = make_file(fd, file[fd]);
 	if (!file[fd])
@@ -114,24 +113,24 @@ char	*get_next_line(int fd)
 int	main(void)
 {
 	char	*line;
-	char	*line2;
+	//char	*line2;
 	int		i;
 	int		fd1;
-	int		fd2;
+	//int		fd2;
 	fd1 = open("tests/test.txt", O_RDONLY);
-	fd2 = open("tests/test2.txt", O_RDONLY);
+	//fd2 = open("tests/test2.txt", O_RDONLY);
 	i = 0;
-	while (i < 6)
+	while (i < 7)
 	{
 		line = get_next_line(fd1);
 		printf("line [%02d]: %s", i, line);
 		free(line);
-		line2 = get_next_line(fd2);
-		printf("line [%02d]: %s", i, line2);
-		free(line2);
+		//line2 = get_next_line(fd2);
+		//printf("line [%02d]: %s", i, line2);
+		//free(line2);
 		i++;
 	}
 	close(fd1);
-	close(fd2);
+	//close(fd2);
 	return (0);
 }*/

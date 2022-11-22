@@ -6,7 +6,7 @@
 /*   By: msprenge <msprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 11:38:42 by msprenge          #+#    #+#             */
-/*   Updated: 2022/11/14 15:03:07 by msprenge         ###   ########.fr       */
+/*   Updated: 2022/11/22 14:08:04 by msprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	*ft_calloc(size_t nmemb, size_t size)
 
 	total = size * nmemb;
 	final = malloc(total);
-	if (final == NULL)
+	if (!final)
 		return (NULL);
 	i = 0;
 	while (total > 0)

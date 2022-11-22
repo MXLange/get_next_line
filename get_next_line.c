@@ -6,7 +6,7 @@
 /*   By: msprenge <msprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 11:38:39 by msprenge          #+#    #+#             */
-/*   Updated: 2022/11/14 17:57:04 by msprenge         ###   ########.fr       */
+/*   Updated: 2022/11/22 14:15:02 by msprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 //#include <stdio.h>
 //#include <fcntl.h>
 
-static char	*erase_first_line(char *file)
+char	*erase_first_line(char *file)
 {
 	char	*temp;
 	size_t	i;
@@ -37,7 +37,7 @@ static char	*erase_first_line(char *file)
 	return (temp);
 }
 
-static char	*get_first_line(char *file)
+char	*get_first_line(char *file)
 {
 	char	*first_line;
 	size_t	i;
@@ -59,7 +59,7 @@ static char	*get_first_line(char *file)
 	return (first_line);
 }
 
-static char	*ft_free(char *file, char *temp)
+char	*ft_free(char *file, char *temp)
 {
 	char	*final;
 
@@ -68,7 +68,7 @@ static char	*ft_free(char *file, char *temp)
 	return (final);
 }
 
-static char	*make_file(int fd, char *file)
+char	*make_file(int fd, char *file)
 {
 	char	*temp;
 	ssize_t	read_bytes;
@@ -77,7 +77,7 @@ static char	*make_file(int fd, char *file)
 		file = ft_calloc(1, 1);
 	if (ft_strchr(file, '\n'))
 		return (file);
-	temp = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
+	temp = ft_calloc((BUFFER_SIZE + 1), sizeof(char));
 	read_bytes = 1;
 	while (read_bytes > 0)
 	{
@@ -85,6 +85,7 @@ static char	*make_file(int fd, char *file)
 		if (read_bytes == -1)
 		{
 			free(temp);
+			free(file);
 			return (NULL);
 		}
 		temp[read_bytes] = 0;
@@ -101,7 +102,7 @@ char	*get_next_line(int fd)
 	static char	*file;
 	char		*line;
 
-	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
+	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	file = make_file(fd, file);
 	if (!file)
